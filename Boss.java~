@@ -1,0 +1,78 @@
+/* Name: Forest Frenzy
+ * Description: A demo game
+ * Author: Dominik Loncar and Daniel Wang
+ * Start date: 9/17/2014
+ * Last edit date: 9/28/2014
+ */
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
+
+public class Boss {
+  
+  int x, y;
+  Image still;
+  boolean alive;
+  int moveDelay = 1;
+  final int MOVESPEED = 20; //the bigger the number, the slower the movement
+  
+  ImageIcon standImg = new ImageIcon("images/4.png");
+  
+  public Rectangle getBounds(){
+    return new Rectangle(x,y, 100, 100);
+  }
+  
+  public Minion(int startX, int startY) {
+    x = startX;
+    y = startY;
+    still = standImg.getImage();
+    alive = true;
+  }//end Character
+  
+  public void stay(int dx){
+    x = x - dx;
+  }
+  
+  public void move(){
+    for (int i = 0; i < 1000; i++){
+    if (moveDelay%MOVESPEED == 0){
+      x--; 
+      moveDelay++;
+    }//end if
+    else
+      moveDelay++;
+    }//end for
+    
+    for (int i = 0; i < 1000; i++){
+    if (moveDelay%MOVESPEED == 0){
+      x++; 
+      moveDelay++;
+    }//end if
+    else
+      moveDelay++;
+    }//end for
+  }//end move
+  
+  public void moveDown(int pY){
+    if (pY > y)
+    y++;
+  }
+  
+  public int getX() {
+    return x;
+  }
+  
+  public int getY() {
+    return y;
+  }
+  
+  public boolean getAlive() {
+    return alive;
+  }
+  
+  public Image getImage() {
+    return still;
+  }
+  
+}//end character

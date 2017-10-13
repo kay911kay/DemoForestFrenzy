@@ -1,0 +1,123 @@
+/* Name: Forest Frenzy
+ * Description: A demo game
+ * Author: Dominik Loncar and Daniel Wang
+ * Start date: 9/17/2014
+ * Last edit date: 9/28/2014
+ */
+
+import java.awt.*; //used for graphics
+import java.awt.event.*; //used for ActionListener
+import javax.swing.*;
+
+
+//create class called Board with 
+//JPanel?
+//Runnable?
+public class Board extends JPanel implements ActionListener, Runnable {
+  public Image img; //creates image object called img
+  public Dude player; //create dude object called player
+  public Timer time; //creat Timer object called time
+  public int v = 750; //spawn distance from top horizontal line
+  public Thread animator; //animates stuff????????????????????????????????????
+  
+  private int jumpP = 750;
+  private int jumpHeight = 100;
+  
+//  boolean a = false;  //dont know what it does but not neccesary
+  boolean done2 = false; //?????????????????????????????????????????????????
+  
+  public Board() {
+    player = new Dude();
+    addKeyListener(new AL());
+    setFocusable(true); //without this no move
+    ImageIcon background = new ImageIcon("images/1.png"); //background
+    img = background.getImage(); //grabs the background
+    time = new Timer(1, this); //???????????????????????????????????????????????????
+    time.start();//starts timer, cant move without
+  }//end Board
+  
+  public void actionPerformed(ActionEvent e) { //????????????????????? 
+    player.move();
+    repaint(); //cant move without, refresh image
+  }//end actionPerformed
+  
+  public void paint(Graphics g) {
+    if (player.dy == 1 && done2 == false) { //if up is pressed
+      done2 = true; //??????????????????????????????????????????????????
+      animator = new Thread(this);
+      animator.start();
+    }
+    
+    super.paint(g);
+    Graphics2D g2d = (Graphics2D) g;
+    if ((player.getX() - 590) % 2400 == 0)// p.getX() == 590 || p.getX() == 2990)
+      player.nx = 0;
+    if ((player.getX() - 1790) % 2400 == 0)// p.getX() == 1790 || p.getX() == 4190)
+      player.nx2 = 0;
+    
+    g2d.drawImage(img, 685 - player.getnX2(), 0, null);
+    if (player.getX() > 590) {
+      g2d.drawImage(img, 685 - player.getnX(), 0, null);
+    }
+    g2d.drawImage(player.getImage(), player.left, v, null);
+    
+    if (player.getdx() == -1) {
+      g2d.drawImage(img, 685 - player.getnX2(), 0, null);
+      g2d.drawImage(player.getImage(), player.left, v, null);
+    }
+  }
+  
+  private class AL extends KeyAdapter {
+    public void keyReleased(KeyEvent e) {
+      player.keyReleased(e);
+    }
+    
+    public void keyPressed(KeyEvent e) {
+      player.keyPressed(e);
+    }
+  }
+  
+  boolean h = false;
+  boolean done = false;
+  
+  public void cycle() {
+    
+    if (h == false)
+      v--;
+    if (v == jumpP-jumpHeight)
+      h = true;
+    if (h == true && v <= jumpP) {
+      v++;
+      if (v == jumpP)
+        done = true;
+    } //end if
+  }
+  
+  public void run() {
+    long beforeTime, timeDiff, sleep;
+    
+    beforeTime = System.currentTimeMillis();
+    
+    while (done == false) { //
+      
+      cycle();
+      
+      timeDiff = System.currentTimeMillis() - beforeTime;
+      sleep = 10 - timeDiff;
+      
+      if (sleep < 0)
+        sleep = 2;
+      try {
+        Thread.sleep(sleep);
+      } catch (InterruptedException e) {
+        System.out.println("interrupted");
+      }
+      
+      beforeTime = System.currentTimeMillis();
+    } //end while
+    done = false;
+    h = false;
+    done2 = false;
+  } //end run
+  
+} //end board

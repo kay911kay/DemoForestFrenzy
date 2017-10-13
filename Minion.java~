@@ -1,0 +1,57 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
+
+public class Minion {
+  
+  int x, y;
+  Image still;
+  boolean alive;
+  
+  ImageIcon standImg = new ImageIcon("images/4.png");
+  ImageIcon jumpLeftImg= new ImageIcon("images/jumpLeft.png");
+  ImageIcon jumpRightImg= new ImageIcon("images/jumpRight.png");
+  ImageIcon leftImg = new ImageIcon("images/left.png");
+  
+  public Rectangle getBounds(){
+    return new Rectangle(x,y, 50, 50);
+  }
+  
+  public Minion(int startX, int startY) {
+    x = startX;
+    y = startY;
+    still = standImg.getImage();
+    alive = true;
+  }//end Character
+  
+  public void move(int dx){
+    x = x - dx;
+    /*if (x < 600)
+      x++;
+    if (x > 1000)
+      x--;
+    */
+  }
+  
+  public void moveDown(int pY){
+    if (pY > y)
+    y++;
+  }
+  
+  public int getX() {
+    return x;
+  }
+  
+  public int getY() {
+    return y;
+  }
+  
+  public boolean getAlive() {
+    return alive;
+  }
+  
+  public Image getImage() {
+    return still;
+  }
+  
+}//end character
